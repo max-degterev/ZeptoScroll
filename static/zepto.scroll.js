@@ -12,7 +12,7 @@
 		duration = duration || 200;
 		(typeof easingF === 'function') && (easing = easingF);
 
-		var startY = document.body.scrollTop,
+		var startY = window.pageYOffset,
 			startT  = Date.now(),
 			finishT = startT + duration;
 

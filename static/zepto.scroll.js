@@ -11,10 +11,15 @@
     return (-Math.cos(pos * Math.PI) / 2) + .5;
   };
 
-  var scroll = function(endY, duration, easingF) {
-    endY = endY || ($.os.android ? 1 : 0);
-    duration = duration || 200;
-    if (typeof easingF === 'function') easing = easingF;
+  var scroll = function(endY, duration, callback) {
+    endY = (typeof endY !== 'undefined') ? endY : ($.os.android ? 1 : 0);
+    duration = (typeof duration !== 'undefined') ? duration : 200;
+
+    if (duration === 0) {
+      window.scrollTo(0, endY);
+      if (typeof callback === 'function') callback();
+      return;
+    }
 
     var startY = window.pageYOffset,
         startT = Date.now(),
@@ -26,16 +31,26 @@
 
       window.scrollTo(0, interpolate(startY, endY, easing(shift)));
 
-      if (now < finishT) setTimeout(animate, 15);
+      if (now < finishT) {
+        setTimeout(animate, 15);
+      }
+      else {
+        if (typeof callback === 'function') callback();
+      }
     };
   
     animate();
   };
 
-  var scrollNode = function(endY, duration, easingF) {
-    endY = endY || 0;
-    duration = duration || 200;
-    if (typeof easingF === 'function') easing = easingF;
+  var scrollNode = function(endY, duration, callback) {
+    endY = (typeof endY !== 'undefined') ? endY : 0;
+    duration = (typeof duration !== 'undefined') ? duration : 200;
+
+    if (duration === 0) {
+      this.scrollTop = endY;
+      if (typeof callback === 'function') callback();
+      return;
+    }
 
     var startY = this.scrollTop,
         startT = Date.now(),
@@ -48,7 +63,12 @@
 
       _this.scrollTop = interpolate(startY, endY, easing(shift));
 
-      if (now < finishT) setTimeout(animate, 15);
+      if (now < finishT) {
+        setTimeout(animate, 15);
+      }
+      else {
+        if (typeof callback === 'function') callback();
+      }
     };
   
     animate();

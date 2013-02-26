@@ -1,3 +1,3 @@
 $('#ttp').on('click', function(e) {
-	$.scroll(0);
+	$.scrollTo(0);
 });

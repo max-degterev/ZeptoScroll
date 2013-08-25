@@ -1,5 +1,5 @@
 $('#ttp').on('click', function(e) {
-	$.scrollTo({
+  $.scrollTo({
     endY: 0,
     duration: 200,
     callback: function() {

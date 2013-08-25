@@ -3,6 +3,12 @@
 */
 
 ;(function($) {
+  var DEFAULTS = {
+    endY: $.os.android ? 1 : 0,
+    duration: 200,
+    updateRate: 15
+  };
+
   var interpolate = function (source, target, shift) {
     return (source + (target - source) * shift);
   };
@@ -11,66 +17,64 @@
     return (-Math.cos(pos * Math.PI) / 2) + .5;
   };
 
-  var scroll = function(endY, duration, callback) {
-    endY = (typeof endY !== 'undefined') ? endY : ($.os.android ? 1 : 0);
-    duration = (typeof duration !== 'undefined') ? duration : 200;
+  var scroll = function(settings) {
+    var options = $.extend({}, DEFAULTS, settings);
 
-    if (duration === 0) {
-      window.scrollTo(0, endY);
-      if (typeof callback === 'function') callback();
+    if (options.duration === 0) {
+      window.scrollTo(0, options.endY);
+      if (typeof options.callback === 'function') options.callback();
       return;
     }
 
     var startY = window.pageYOffset,
         startT = Date.now(),
-        finishT = startT + duration;
+        finishT = startT + options.duration;
 
     var animate = function() {
       var now = Date.now(),
-          shift = (now > finishT) ? 1 : (now - startT) / duration;
+          shift = (now > finishT) ? 1 : (now - startT) / options.duration;
 
-      window.scrollTo(0, interpolate(startY, endY, easing(shift)));
+      window.scrollTo(0, interpolate(startY, options.endY, easing(shift)));
 
       if (now < finishT) {
-        setTimeout(animate, 15);
+        setTimeout(animate, options.updateRate);
       }
       else {
-        if (typeof callback === 'function') callback();
+        if (typeof options.callback === 'function') options.callback();
       }
     };
-  
+
     animate();
   };
 
-  var scrollNode = function(endY, duration, callback) {
-    endY = (typeof endY !== 'undefined') ? endY : 0;
-    duration = (typeof duration !== 'undefined') ? duration : 200;
+  var scrollNode = function(settings) {
+    var options = $.extend({}, DEFAULTS, settings);
 
-    if (duration === 0) {
-      this.scrollTop = endY;
-      if (typeof callback === 'function') callback();
+    if (options.duration === 0) {
+      this.scrollTop = options.endY;
+      if (typeof options.callback === 'function') options.callback();
       return;
     }
 
     var startY = this.scrollTop,
         startT = Date.now(),
-        finishT = startT + duration,
+        finishT = startT + options.duration,
         _this = this;
 
     var animate = function() {
       var now = Date.now(),
-          shift = (now > finishT) ? 1 : (now - startT) / duration;
+          shift = (now > finishT) ? 1 : (now - startT) / options.duration;
 
-      _this.scrollTop = interpolate(startY, endY, easing(shift));
+      _this.scrollTop = interpolate(startY, options.endY, easing(shift));
 
       if (now < finishT) {
-        setTimeout(animate, 15);
+        setTimeout(animate, options.updateRate);
       }
       else {
-        if (typeof callback === 'function') callback();
+        if (typeof options.callback === 'function') options.callback();
       }
     };
-  
+
     animate();
   };
 

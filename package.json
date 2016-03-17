@@ -1,0 +1,24 @@
+{
+  "name": "zeptoscroll",
+  "version": "0.0.1",
+  "description": "Scroll window or DOM nodes with zepto",
+  "main": "static/zepto.scroll.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suprMax/ZeptoScroll.git"
+  },
+  "keywords": [
+    "zepto",
+    "scroll",
+    "jquery"
+  ],
+  "author": "suprMax",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/suprMax/ZeptoScroll/issues"
+  },
+  "homepage": "https://github.com/suprMax/ZeptoScroll#readme"
+}
